@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "554013912236",
+    "project_id": "cosmeticapp-db2bf",
+    "storage_bucket": "cosmeticapp-db2bf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554013912236:android:ed07b4d1094f4b32820309",
+        "android_client_info": {
+          "package_name": "com.example.ungdungbanmypham"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAe0EYd9IQGVrvmcxYJvzow8cR7o13o8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
