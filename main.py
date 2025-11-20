@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
-from routers import users, categories, brands, products, orders, order_items
+from routers import users, categories, brands, products, orders, order_items, product_variants
 from database import engine
 from models import Base
 import logging
@@ -37,12 +37,13 @@ def read_root():
     }
 
 
-app.include_router(users.router, prefix="/users", tags=["users"])
-app.include_router(categories.router, prefix="/categories", tags=["categories"])
-app.include_router(brands.router, prefix="/brands", tags=["brands"])
-app.include_router(products.router, prefix="/products", tags=["products"])
-app.include_router(orders.router, prefix="/orders", tags=["orders"])
-app.include_router(order_items.router, prefix="/order-items", tags=["order_items"])
+app.include_router(users.router,  tags=["users"])
+app.include_router(categories.router,  tags=["categories"])
+app.include_router(brands.router,  tags=["brands"])
+app.include_router(products.router, tags=["products"])
+app.include_router(orders.router, tags=["orders"])
+app.include_router(order_items.router, tags=["order_items"])
+app.include_router(product_variants.router, tags=["product_variants"])
 
 #uvicorn main:app --reload --host 127.0.0.1 --port 8000
 #uvicorn main:app --reload --host 0.0.0.0 --port 8000
