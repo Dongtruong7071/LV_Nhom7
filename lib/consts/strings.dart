@@ -33,3 +33,6 @@ const topBrand = "Thương hiệu hàng đầu";
 const topCategories = "Danh mục hàng đầu";
 const featuredCategories = "Danh mục nổi bật";
 
+//category strings
+const brand= "Thương hiệu";
+const category= "Danh mục";

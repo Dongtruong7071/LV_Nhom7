@@ -6,8 +6,7 @@ class Order {
   final double totalAmount;
   final String status;
   final String shippingAddress;
-  final DateTime? createdAt;
-  final List<OrderItem>? items;
+  final List<OrderItem> items;
 
   Order({
     required this.id,
@@ -15,19 +14,31 @@ class Order {
     required this.totalAmount,
     required this.status,
     required this.shippingAddress,
-    this.createdAt,
-    this.items,
+    required this.items,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) {
+    var itemsList = json['items'] as List<dynamic>?;
+    List<OrderItem> items = itemsList?.map((i) => OrderItem.fromJson(i)).toList() ?? [];
+
     return Order(
       id: json['id'],
       userId: json['user_id'],
-      totalAmount: double.parse(json['total_amount'].toString()),
+      totalAmount: (json['total_amount'] as num).toDouble(),
       status: json['status'],
       shippingAddress: json['shipping_address'],
-      createdAt: DateTime.tryParse(json['created_at'] ?? ''),
-      items: (json['items'] as List?)?.map((i) => OrderItem.fromJson(i)).toList(),
+      items: items,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'user_id': userId,
+      'total_amount': totalAmount,
+      'status': status,
+      'shipping_address': shippingAddress,
+      'items': items.map((i) => i.toJson()).toList(),
+    };
   }
 }

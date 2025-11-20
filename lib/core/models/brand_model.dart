@@ -16,4 +16,13 @@ class Brand {
       createdAt: DateTime.tryParse(json['created_at'] ?? ''),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'logo_url': logoUrl,
+      'description': description,
+    };
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ungdungbanmypham/consts/lists.dart';
-import 'package:ungdungbanmypham/services/auth_service.dart';
+import 'package:ungdungbanmypham/core/services/auth_service.dart';
 import 'package:ungdungbanmypham/views/auth_screen/signup_screen.dart';
 import 'package:ungdungbanmypham/views/home_screen/home.dart';
 import 'package:ungdungbanmypham/widget_common/applogo_wdget.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:ungdungbanmypham/consts/consts.dart';
 import 'package:ungdungbanmypham/core/models/product_model.dart';
 import 'package:ungdungbanmypham/widget_common/our_button.dart';
@@ -11,7 +11,18 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasVariant = product.variants.isNotEmpty;
+    final variant = hasVariant ? product.variants.first : null;
+
+    final double? minPrice = hasVariant
+        ? product.variants.map((v) => v.price).reduce((a, b) => a < b ? a : b)
+        : null;
+
+    final priceText = minPrice != null ? "${minPrice.toInt()}đ" : "Liên hệ";
+    final bool inStock = hasVariant && product.variants.any((v) => v.stock > 0);
+
     return Container(
+      margin: const EdgeInsets.all(8), 
       decoration: BoxDecoration(
         color: whiteColor,
         borderRadius: BorderRadius.circular(12),
@@ -26,12 +37,12 @@ class ProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Hình ảnh
+          // Ảnh
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: product.imageUrl != null
+            child: (variant?.imageUrl != null && variant!.imageUrl!.isNotEmpty)
                 ? Image.network(
-                    product.imageUrl!,
+                    variant.imageUrl!,
                     height: 140,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -50,34 +61,72 @@ class ProductCard extends StatelessWidget {
                   ),
           ),
 
-          8.heightBox,
+          Expanded( 
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded( 
+                    child: Text(
+                      product.name,
+                      style: const TextStyle(fontFamily: semibold, fontSize: 14),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
 
-          // Tên + giá
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                product.name.text.fontFamily(semibold).size(14).maxLines(2).ellipsis.make(),
-                4.heightBox,
-                "${product.price.toStringAsFixed(0)}đ".text.color(redColor).fontFamily(bold).size(16).make(),
-              ],
+                  4.heightBox,
+
+                  // Giá
+                  Text(
+                    priceText,
+                    style: const TextStyle(
+                      color: redColor,
+                      fontFamily: bold,
+                      fontSize: 16,
+                    ),
+                  ),
+
+                  4.heightBox,
+
+                  // Trạng thái tồn kho
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.inventory,
+                        size: 14,
+                        color: inStock ? Colors.green : Colors.red,
+                      ),
+                      4.widthBox,
+                      Text(
+                        inStock ? 'Còn hàng' : 'Hết hàng',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: inStock ? Colors.green : Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
 
-          const Spacer(),
-
-          // Nút thêm vào giỏ
-          SizedBox(
-            width: double.infinity,
-            child: ourButton(
-              () {
-                // Get.to(() => ProductDetailScreen(product: product));
-              },
-              redColor,
-              whiteColor,
-              "Xem chi tiết",
-            ).marginSymmetric(horizontal: 8, vertical: 8),
+          // Nút xem chi tiết
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
+            child: SizedBox(
+              width: double.infinity,
+              child: ourButton(
+                () {
+                  // Get.to(() => ProductDetailScreen(product: product));
+                },
+                redColor,
+                whiteColor,
+                "Xem chi tiết",
+              ),
+            ),
           ),
         ],
       ),

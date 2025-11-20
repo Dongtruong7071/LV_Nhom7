@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ungdungbanmypham/consts/consts.dart';
-import 'package:ungdungbanmypham/services/auth_service.dart';
+import 'package:ungdungbanmypham/core/services/auth_service.dart';
 import 'package:ungdungbanmypham/views/auth_screen/login_screen.dart';
 import 'package:ungdungbanmypham/widget_common/applogo_wdget.dart';
 import 'package:ungdungbanmypham/widget_common/bg_widget.dart';
