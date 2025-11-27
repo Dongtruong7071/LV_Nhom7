@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from dependencies import get_db, get_current_admin
+from dependencies import get_db, get_current_admin, get_current_user
 from models import User as UserModel
 from schemas import User as UserSchema, UserCreate, UserUpdate, UserRoleUpdate
 from typing import List
@@ -19,8 +19,15 @@ def read_user(user_id: int, db: Session = Depends(get_db), admin = Depends(get_c
         raise HTTPException(404, "User not found")
     return user
 
+@router.get("/by_uid/{fibase_uid}", response_model=UserSchema)
+def read_userbyuid(fibase_uid: str, db: Session = Depends(get_db)):
+    user = db.query(UserModel).filter(UserModel.firebase_uid == fibase_uid).first()
+    if not user:
+        raise HTTPException(404, "User not found")
+    return user
+
 @router.put("/{user_id}", response_model=UserSchema)
-def update_user(user_id: int, user_data: UserUpdate, db: Session = Depends(get_db), admin = Depends(get_current_admin)):
+def update_user(user_id: int, user_data: UserUpdate, db: Session = Depends(get_db)):
     user = db.query(UserModel).filter(UserModel.id == user_id).first()
     if not user:
         raise HTTPException(404, "User not found")
@@ -51,7 +58,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(db_user)
     return db_user
 
-@router.post("/set-role", response_model=dict)
+@router.post("/set_role", response_model=dict)
 def set_role(
     user_role: UserRoleUpdate,
     admin = Depends(get_current_admin)
@@ -60,4 +67,6 @@ def set_role(
         firebase_auth.set_custom_user_claims(user_role.uid, {"role": user_role.role})
         return {"success": True, "uid": user_role.uid, "role": user_role.role}
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=400, detail=f"Failed to set role: {str(e)}")

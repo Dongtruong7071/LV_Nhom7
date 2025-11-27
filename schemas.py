@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
 
-# ===================== USER =====================
 class UserBase(BaseModel):
     firebase_uid: str
     address: Optional[str] = None
@@ -12,7 +11,6 @@ class UserCreate(UserBase):
     pass
 
 class UserUpdate(BaseModel):
-    firebase_uid: Optional[str] = None
     address: Optional[str] = None
     phone: Optional[str] = None
 
@@ -29,7 +27,6 @@ class UserRoleUpdate(BaseModel):
     role: str
 
 
-# ===================== CATEGORY =====================
 class CategoryBase(BaseModel):
     name: str
 
@@ -43,7 +40,6 @@ class Category(CategoryBase):
         from_attributes = True
 
 
-# ===================== BRAND =====================
 class BrandBase(BaseModel):
     name: str
     logo_url: Optional[str] = None
@@ -65,12 +61,10 @@ class Brand(BrandBase):
         from_attributes = True
 
 
-# ===================== PRODUCT VARIANT =====================
 class ProductVariantBase(BaseModel):
     name: str  # ví dụ: "50ml", "Màu đỏ"
     price: float
     stock: Optional[int] = 0
-    image_url: Optional[str] = None
 
 class ProductVariantCreate(ProductVariantBase):
     pass
@@ -79,7 +73,6 @@ class ProductVariantUpdate(BaseModel):
     name: Optional[str] = None
     price: Optional[float] = None
     stock: Optional[int] = None
-    image_url: Optional[str] = None
 
 class ProductVariant(ProductVariantBase):
     id: int
@@ -89,7 +82,6 @@ class ProductVariant(ProductVariantBase):
         from_attributes = True
 
 
-# ===================== PRODUCT =====================
 class ProductBase(BaseModel):
     name: str
     brand_id: Optional[int] = None
@@ -123,12 +115,11 @@ class Product(ProductBase):
         from_attributes = True
 
 
-# ===================== ORDER ITEM =====================
 class OrderItemBase(BaseModel):
     product_id: int
     variant_id: Optional[int] = None  # nullable
     quantity: int
-    price: float  # giá tại thời điểm đặt hàng
+    price: float
 
 class OrderItemCreate(OrderItemBase):
     pass
@@ -149,7 +140,6 @@ class OrderItem(OrderItemBase):
         from_attributes = True
 
 
-# ===================== ORDER =====================
 class OrderBase(BaseModel):
     total_amount: float
     status: str = "pending"

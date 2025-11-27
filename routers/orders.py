@@ -54,8 +54,7 @@ def read_order(order_id: int, db: Session = Depends(get_db), user = Depends(get_
 def update_order(
     order_id: int,
     order_update: OrderUpdate,
-    db: Session = Depends(get_db),
-    admin = Depends(get_current_admin)
+    db: Session = Depends(get_db)
 ):
     order = db.query(OrderModel).filter(OrderModel.id == order_id).first()
     if not order:

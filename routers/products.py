@@ -35,13 +35,7 @@ def read_products(
     in_stock: Optional[bool] = None,
     db: Session = Depends(get_db)
 ):
-    """
-    Lấy danh sách sản phẩm với:
-    - Tìm kiếm tên, thành phần
-    - Lọc theo brand, category
-    - Lọc theo khoảng giá của biến thể
-    - Chỉ hiển thị sản phẩm còn hàng
-    """
+
     query = db.query(ProductModel).options(joinedload(ProductModel.variants))
 
     if search:
@@ -72,7 +66,6 @@ def read_products(
     if in_stock:
         query = query.join(ProductVariant).filter(ProductVariant.stock > 0)
 
-    # Phân trang
     total = query.count()
     products = query.offset(skip).limit(limit).all()
 

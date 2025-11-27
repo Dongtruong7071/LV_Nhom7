@@ -51,12 +51,10 @@ def read_variant(variant_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{variant_id}", response_model=VariantSchema)
-
 def update_variant(
     variant_id: int,
     variant: ProductVariantUpdate,
-    db: Session = Depends(get_db),
-    admin=Depends(get_current_admin)
+    db: Session = Depends(get_db)
 ):
     db_variant = db.query(VariantModel).filter(VariantModel.id == variant_id).first()
     if not db_variant:

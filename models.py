@@ -7,7 +7,6 @@ from sqlalchemy import DateTime
 
 Base = declarative_base()
 
-# ===================== USER =====================
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
@@ -17,7 +16,6 @@ class User(Base):
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
-# ===================== CATEGORY =====================
 class Category(Base):
     __tablename__ = "categories"
     id = Column(Integer, primary_key=True, index=True)
@@ -25,7 +23,6 @@ class Category(Base):
 
     products = relationship("Product", back_populates="category")
 
-# ===================== BRAND =====================
 class Brand(Base):
     __tablename__ = "brands"
     id = Column(Integer, primary_key=True, index=True)
@@ -36,7 +33,6 @@ class Brand(Base):
 
     products = relationship("Product", back_populates="brand")
 
-# ===================== PRODUCT =====================
 class Product(Base):
     __tablename__ = "products"
     id = Column(Integer, primary_key=True, index=True)
@@ -55,7 +51,6 @@ class Product(Base):
     variants = relationship("ProductVariant", back_populates="product",
                             cascade="all, delete-orphan")
 
-# ===================== PRODUCT VARIANT =====================
 class ProductVariant(Base):
     __tablename__ = "product_variants"
 
@@ -65,11 +60,9 @@ class ProductVariant(Base):
     name = Column(String(255))                # ví dụ: “50ml”, “Màu 01”
     price = Column(DECIMAL(10, 2), nullable=False)
     stock = Column(Integer, default=0)
-    image_url = Column(String(255))
 
     product = relationship("Product", back_populates="variants")
 
-# ===================== ORDER =====================
 class Order(Base):
     __tablename__ = "orders"
     id = Column(Integer, primary_key=True, index=True)
@@ -82,7 +75,6 @@ class Order(Base):
 
     items = relationship("OrderItem", back_populates="order")
 
-# ===================== ORDER ITEM =====================
 class OrderItem(Base):
     __tablename__ = "order_items"
     id = Column(Integer, primary_key=True, index=True)
